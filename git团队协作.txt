@@ -1,0 +1,15 @@
+git多个人 团队协作开发
+
+
+github中 该项目 -settings
+增加合作者： Collaborators 加入 合作者：github 全名或邮箱
+
+发送邀请链接
+
+
+
+
+合作伙伴： 打开该链接、接受邀请 :合作开发....clone项目、修改、add \commit\push
+
+
+
