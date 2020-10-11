@@ -1,0 +1,144 @@
+## Git 分布式版本控制器
+
+相较于`cvs`、`svn`这类集中式版本控制器，git的优势在于：
+本地版本控制、重写提交说明、可以退回“后悔”、分支系统等。
+
+SVN：增量的分支系统
+Git：全量的分支系统（每一个版本都包含全部的文件,时刻保持数据的完整性）
+
+![](https://s1.ax1x.com/2020/10/11/0cEkFg.png)
+
+***
+
+### git安装
+
+1. 网址： `msysgit.github.io`
+
+2. 安装：`Use git from git bash only..`,其他默认下一步
+
+3. 配置path：`F\SystemApp\Git\bin`
+
+4. 配置git（用户名+邮箱）：右键选中`Git Bash Here`
+
+   `git config --global user.name "CTX"`
+
+   `git config --global user.email "348958520@qq.com"`
+
+### 建立git连接
+
+1. 建立ssh免秘钥登陆
+
+   本地生成：`ssh-keygen -t rsa -C 348958520@qq.com` + 一直回车
+   （默认存放地址：C:\Users\CTX\.ssh）
+
+   发往远端：（`个人GitHub→Settings→SSH and...→New SSH：title[协作用户名]+Key[C:\Users\CTX\.ssh\id_rsa.pub的内容]`
+
+   测试连通：`ssh -T git@github.com`  
+   （若`C:\Users\CTX\.ssh` 中出现`known_hosts`文件则表示成功连通）
+
+2. 把本地文件初始化为git项目：
+文件夹里右键选中 `Git Bash Here` + `git init`
+
+3. 在GitHub上新建一个仓库生成（**区分大小写**）:
+`git@github.com:TangSong99/Git_Test.git`
+
+4. 本地项目和远程仓库关联
+`git remote add origin git@github.com:TangSong99/Git_Test.git`
+用`git remote -v`查看是否关联，若本机之前已存在可以先执行`git remote rm origin`
+
+### 第一次发布
+
+1. `git add .`
+   将当前文件写入暂存区
+   
+2. `git commit -m "注释内容"`（-m "注释内容"可以替换为回车进行多注释声明）
+   暂存区提交到本地分支，默认master（重复提交会显示`On branch master nothing to commit, working tree clean`，因为commit将文件从暂存区提交到对象区了，暂存区没有东西）
+   
+3. `git push -u origin master`
+   作为主分支提交到仓库中，若不是新仓库即使是清空仓库也会失败（因为先前仓库的库版本会有一个`commit readme.md`而本地没有导致两个版本不一致，可以用pull更新本地再上传或者`git push -f origin master`强制覆盖。如果为空仓库建议重新建立仓库。）
+
+### 第一次下载
+
+1. `git clone git@github.com:TangSong99/Git_Test.git`
+   下载到本地，**再次强调仓库地址区分带小写！**
+
+### 提交本地更新（本地→远程）
+
+1. `git add .`
+2. `git commit -m "提交到分支"`
+3. `git push origin master`
+
+### 拉取仓库更新（远程→本地）
+
+1. `git pull`
+
+***
+
+### 团队协作
+
+发起者：
+GitHub仓库的Settings→Manage acess→invite a collaborator→合作者GitHub全名/邮箱→发送邀请链接
+
+协作者：
+点击链接参与合作：clone、编写、提交更新（add/commit/push）
+
+***
+
+### Git执行流程
+#### Git 3+1种状态：
+
+（已管理）：项目中被git管理的部分才有以下三种状态
+已修改（modified）：修改后的代码、暂存区回到工作区（`git rm --cached`）
+已暂存（staged）：执行add后
+已提交（commited）：执行commit后
+
+![](https://s1.ax1x.com/2020/10/11/0cEHcn.png)
+
+通过`git init`将目录纳入git管理，默认为master分支。执行后会生成`.git`文件，它是git版本控制的目录。
+
+#### Git 日志
+
+`git log` / `git log -number`：查看（最近次数）提交的日志
+
+```
+$ git log
+commit d433136c1d275fa26fdbf835cc4b2ecd4aeae4ec (HEAD -> master)
+Author: CTX <348958520@qq.com>
+Date:   Sun Oct 11 11:00:03 2020 +0800
+
+    更新时间2020年10月11日 11:00:22
+
+commit 8bca948ba633f2d93231560573c97da88df74a5b (origin/master, origin/HEAD)
+Author: CTX <348958520@qq.com>
+Date:   Sun Oct 11 09:49:54 2020 +0800
+
+    更新git进阶
+
+commit 480e0a9184d0f1691de70afe4bcad5943b41b2b8
+Author: 唐宋丶 <52407046+TangSong99@users.noreply.github.com>
+Date:   Sun Oct 11 09:08:36 2020 +0800
+
+    Create 仓库说明.txt
+
+```
+
+`git log --pretty=online`：单行显示简要信息
+
+```
+$ git log --pretty=oneline
+d433136c1d275fa26fdbf835cc4b2ecd4aeae4ec (HEAD -> master) 更新时间2020年10月11日 11:00:22
+8bca948ba633f2d93231560573c97da88df74a5b (origin/master, origin/HEAD) 更新git进阶
+480e0a9184d0f1691de70afe4bcad5943b41b2b8 Create 仓库说明.txt
+
+```
+
+`git log --pretty=format:"%h - %an ,%ar : %s"`：自定义格式化输出
+
+```
+$ git log --pretty=format:"%h - %an ,%ar : %s"
+d433136 - CTX ,7 minutes ago : 更新时间2020年10月11日 11:00:22
+8bca948 - CTX ,77 minutes ago : 更新git进阶
+480e0a9 - 唐宋丶 ,2 hours ago : Create 仓库说明.txt
+```
+
+其中commit后面跟着的是用sha1计算出的随机数，用于区分是哪一次提交
