@@ -142,3 +142,43 @@ d433136 - CTX ,7 minutes ago : 更新时间2020年10月11日 11:00:22
 ```
 
 其中commit后面跟着的是用sha1计算出的随机数，用于区分是哪一次提交
+
+
+
+
+
+
+
+***
+
+### 记一次Git旧版本覆盖本地代码后的找回
+
+**场景**：修改完代码后忘记先pull拉取到最新版本了，直接commit后无法提交报错
+
+```
+error: Your local changes to the following files would be overwritten by merge:
+.env.development
+vue.config.js
+Please commit your changes or stash them before you merge.
+```
+卡在暂存区，这时候应该只需要用下面方法撤销commit即可，
+
+```
+git stash
+git pull
+git stash pop
+```
+
+但是我看了第一篇公众号的方法直接执行了`git rebase -i HEAD^`导致本地代码直接被昨天提交的覆盖了，真刺激。VSCode没有自带Local History插件后面用一下方法解决：
+
+```
+ git reflog  //查看最近提交状态及其更新的时间
+ 24d45df5 HEAD@{6}: commit: Android/IOS版本更新
+ 
+ git reset --hard 24d45df5  //回退版本号
+```
+
+【提交前一定要pull同步更新代码！！！】
+
+
+
