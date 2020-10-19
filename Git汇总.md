@@ -146,7 +146,7 @@ git push
 
   `git rm a.txt`//删除本地文件和对象区中的a.txt，再把删除文件的操作指令退回到暂存区
 
-  `git commit -m "彻底删除a.txt"//相当于重新提交了上一条语句，讲a.txt彻底删除`
+  `git commit -m "彻底删除a.txt"//相当于重新提交了上一条语句，将a.txt彻底删除`
 
 ***
 
