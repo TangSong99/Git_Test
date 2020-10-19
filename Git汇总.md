@@ -119,8 +119,6 @@ git commit -m "注释尽量要详细、具体"
 git push
 ```
 
-
-
 ***
 
 ### Git执行流程
@@ -137,16 +135,61 @@ git push
 
 通过`git init`将目录纳入git管理，默认为master分支。执行后会生成`.git`文件，它是git版本控制的目录。
 
+***
 
+### Git回退、删除、后悔、忽略、版本穿梭
 
 * 从暂存区回到工作区：
   `git reset head [filename]`
 
-* 删除已提交到对象区的文件
+* 删除已提交到对象区的文件1
 
   `git rm a.txt`//删除本地文件和对象区中的a.txt，再把删除文件的操作指令退回到暂存区
 
   `git commit -m "彻底删除a.txt"//相当于重新提交了上一条语句，将a.txt彻底删除`
+
+  * ​	`git rm xx`后的后悔操作
+
+    `git restore --staged a.txt`
+
+    `git restore a.txt`
+
+* 删除已提交到对象区的文件2
+
+  `rm a.txt`//删除本地文件和对象区中的a.txt，再把删除文件的操作指令退回到工作区
+
+  `git add .`//提交删除指令到暂存区
+
+  `git commit -m "彻底删除a.txt"`
+
+* 重命名（实质上是拷贝一份新名称文件，再把旧的删除）
+
+  `git mv a.txt aa.txt`，也可以直接`mv a.txt aa.txt`
+
+* 注释重写
+
+  git commit --amend -m '修正'
+
+* 忽略（配置）文件，空文件夹默认忽略 `.gitignore`
+
+  ```
+  *.properties
+  !a.properties
+  #忽略整个目录底下文件
+  dir/
+  #忽略任意级目录下的txt
+  dir/**/*.txt
+  ```
+
+* 回退到上一次版本（多人合作的时候要回退最好用指定sha1值）
+
+  `git reset --head HEAD^`  回退到上两次用`HEAD^^`，上n次用`HEAD~n`
+
+* 指定sha1回退
+
+  `git reflog`  查看记录，记录所有操作。可以帮助我们 实现“后悔”操作。需要借助于良好的注释习惯
+
+  `git reset --hard [sha1值的前几位]`  reset是将之前增加到暂存区的内容回退到工作区
 
 ***
 
@@ -197,11 +240,57 @@ d433136 - CTX ,7 minutes ago : 更新时间2020年10月11日 11:00:22
 
 其中commit后面跟着的是用sha1计算出的随机数，用于区分是哪一次提交
 
+***
 
+### Git分支
 
+分支含义为一个commit链，一条工作记录线
 
+* `git branch`  查看分支
 
+* `git branch [branch's name]`  创建分支
 
+* `git checkout [branch's name]` 切换分支
+
+* `git checkout -b [branch's name]`创建并切换分支
+
+* `git branch -d [branch's name]`  删除分支（不能删除自身和“未合并”内容，未合并可以-D强行删除）
+
+* `git branch -m [old name] [new name]`  分支重命名
+
+* `git merge [branch's name]`合并操作（合并增/删操作）
+
+  如果一个分支靠前(dev)，另一个落后(master)。如果不冲突的话， master可以通过 merge 直接追赶上dev，称为 fast forward。
+
+***
+
+### Git现场
+
+stash为保存现场的意思，在功能未没有开发完毕前，不建议commit，且不能切换分支。若要切换要保存现场。
+
+* 保存现场
+
+  `git stash`
+
+* 还原现场(新的不动，旧的替换)
+
+  `git stash pop`  还原并删除保存
+
+  `git stash apply`  还原但不删除保存
+
+* 查看现场
+
+  `git stash list`
+
+***
+
+### 其他
+
+剩下一些差异性、GitHub上的操作、SubTree、Gretty以及GitLab的配置使用
+
+前面的比较简单，后面的目前还用不到，留个坑后续遇到在学吧
+
+[Git进阶](https://www.bilibili.com/video/BV1y4411a7Nn)
 
 ***
 

@@ -193,7 +193,7 @@ git log --graph
 
 合并add 和commit：
 git commit -am '注释'
-
+------------------------------------------------------------------------------------------------------
 版本穿梭：在多个commit之间 进行穿梭。 回退、前进
 
 回退到上二次commit：  git reset --hard HEAD^^
@@ -226,7 +226,7 @@ git checkout sha1值
 分支重命名：
 	git branch -m master master2
 
-
+---------------
 stash:保存现场
 	1.建议（规范） ：在功能未没有开发完毕前，不要commit
 	2.规定（必须） ： 在没有commit之前，不能chekcout切换分支 （不在同一个commit阶段）
