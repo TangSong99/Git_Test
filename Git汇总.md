@@ -91,7 +91,7 @@ GitHub仓库的Settings→Manage acess→invite a collaborator→合作者GitHub
 实际开发中公司一般用的是自己的GitLab，用申请到的帐号进行登陆，进去后先配一下本地的公钥，git中的name和email也要改成要求的格式。然后进去到对应的项目直接拉取master，开发时再在本地切换需要的分支就行了。
 
 ```
-//本地git账户改名，项目提交前也可以再检查一遍
+//本地git账户改名（修改之前的提交仍然使用的是之前的邮箱和名字），项目提交前也可以再检查一遍
 git config --global "caitianxin"
 git config --global "caitianxin@taqu.cn"
 
@@ -133,12 +133,13 @@ git push
 
 ![](https://s1.ax1x.com/2020/10/11/0cEHcn.png)
 
+(注：新版git用restore替换checkout)
+
 通过`git init`将目录纳入git管理，默认为master分支。执行后会生成`.git`文件，它是git版本控制的目录。
 
 
 
 从暂存区回到工作区：
-
 `git reset head [filename]`
 
 #### Git 日志
