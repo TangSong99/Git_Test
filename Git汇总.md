@@ -23,6 +23,8 @@ Git：全量的分支系统（每一个版本都包含全部的文件,时刻保�
    `git config --global user.name "CTX"`
 
    `git config --global user.email "348958520@qq.com"`
+   
+   （注：`--system`为整个计算机、`--global`为当前用户、`--local`为当前项目）
 
 ### 建立git连接
 
@@ -84,6 +86,43 @@ GitHub仓库的Settings→Manage acess→invite a collaborator→合作者GitHub
 
 ***
 
+### 实际开发中的项目拉取
+
+实际开发中公司一般用的是自己的GitLab，用申请到的帐号进行登陆，进去后先配一下本地的公钥，git中的name和email也要改成要求的格式。然后进去到对应的项目直接拉取master，开发时再在本地切换需要的分支就行了。
+
+```
+//本地git账户改名，项目提交前也可以再检查一遍
+git config --global "caitianxin"
+git config --global "caitianxin@taqu.cn"
+
+//下载项目,SSH下载不了就尝试用HTTP，HTTP需要帐号密码验证
+git clone [global's SSH/HTTP]
+
+//打开项目切换分支，VSCode左下角直接切换分支进行开发，可以查看当前分支：
+git branch
+
+//要提交前一定要记得先拉取项目到最新！
+git pull
+
+//（将AppVersion目录下的文件）提交到暂存区
+git add src/views/appConfig/appVersion
+//多个文件写法(逗号+空格)
+git add src/views/a.vue, src/views/b.vue
+
+//中途可以查看一下是否成功
+git status
+
+//提交到本地分支
+git commit -m "注释尽量要详细、具体"
+
+//提交到远程仓库
+git push
+```
+
+
+
+***
+
 ### Git执行流程
 #### Git 3+1种状态：
 
@@ -95,6 +134,12 @@ GitHub仓库的Settings→Manage acess→invite a collaborator→合作者GitHub
 ![](https://s1.ax1x.com/2020/10/11/0cEHcn.png)
 
 通过`git init`将目录纳入git管理，默认为master分支。执行后会生成`.git`文件，它是git版本控制的目录。
+
+
+
+从暂存区回到工作区：
+
+`git reset head [filename]`
 
 #### Git 日志
 
